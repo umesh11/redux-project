@@ -6,6 +6,7 @@ const Counter = (props) => {
 const count = useSelector((state) => {
          return state.counter.count;
      });
+    //state.name.objkeyname
 const dispatch = useDispatch();
 const [incrementAmount, setIncrementAmount] = useState(0);
 
