@@ -1,18 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux';
-import { selectAllPosts } from './postSlice';
+import { selectAllPosts, getPostsError, getPostsStatus, fetchPosts } from './postSlice';
+import PostAuthor from './postAuthor';
+import TimeAgo from './TimeAgo';
+import ReactionButton from './ReactionButton';
+import PostExcerpts from './PostExcerpts';
 
 const PostList = (props) => {
+  const dispatch = useDispatch();
     const posts = useSelector(selectAllPosts);
+    const postError = useSelector(getPostsError);
+    const postStatus = useSelector(getPostsStatus);
+
+    useEffect(() => {
+      if(postStatus == 'idle'){
+        dispatch(fetchPosts());
+      }
+    }, [postStatus, dispatch]);
     
 
     const renderedPosts = (posts || []).map((post) => {
-        return <article key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.content.substring(0, 100)}</p>
-        </article>
+        return <PostExcerpts key={post.id} post={post} />
     })
-    console.log({renderedPosts})
+    
   return (
     <>
    <section>
